@@ -1,0 +1,6 @@
+# Required Libraries for SOMA_AI
+google-adk
+beautifulsoup4  
+youtube-transcript-api  
+PyPDF2 
+python-dateutil  

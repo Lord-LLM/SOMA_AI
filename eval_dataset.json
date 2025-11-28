@@ -1,0 +1,10 @@
+[
+  {
+    "id": "case_1",
+    "prompt": "Summarize: https://en.wikipedia.org/wiki/Artificial_intelligence"
+  },
+  {
+    "id": "case_2",
+    "prompt": "Summarize this PDF content about Machine Learning basics."
+  }
+]
