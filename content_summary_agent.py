@@ -22,7 +22,7 @@ retry_config = types.HttpRetryOptions(
     http_status_codes=[429, 500, 503, 504]
 )
 
-# --- Tool Functions ---
+# Tool Functions 
 
 def fetch_webpage_content(url: str) -> dict:
     """
@@ -35,13 +35,12 @@ def fetch_webpage_content(url: str) -> dict:
         Dictionary with status and extracted text content
     """
     try:
-        # --- NEW CODE: Add headers to mimic a browser ---
+        # Add headers to mimic a browser 
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         }
-        # Pass headers=headers here
+        
         response = requests.get(url, headers=headers, timeout=10)
-        # ------------------------------------------------
         
         response.raise_for_status()
         
@@ -129,7 +128,7 @@ def process_pdf_text(pdf_content_base64: str) -> dict:
         pdf_reader = PyPDF2.PdfReader(pdf_file)
         text = ""
         
-        # Extract text from all pages (limit to first 50 pages)
+        # Extract text from all pages
         for page_num in range(min(50, len(pdf_reader.pages))):
             page = pdf_reader.pages[page_num]
             text += page.extract_text()
@@ -148,13 +147,13 @@ def process_pdf_text(pdf_content_base64: str) -> dict:
             "error_message": f"Failed to process PDF: {str(e)}"
         }
 
-# --- Agent Configuration ---
+#  Agent Configuration 
 
 
 
 content_summary_agent = LlmAgent(
     name="ContentSummaryAgent",
-    # UPDATED: Changed model to 'gemini-1.5-flash' which supports tools correctly
+    
     model=Gemini(model="gemini-2.5-flash-lite", retry_options=retry_config),
     instruction="""You are a specialized content summarization expert for students.
     
@@ -170,7 +169,6 @@ content_summary_agent = LlmAgent(
     Format your summary clearly with markdown headers.
     Be concise but thorough. Focus on educational value.""",
     tools=[
-        # UPDATED: Passing functions directly (No FunctionTool wrapper)
         fetch_webpage_content,
         fetch_youtube_transcript,
         process_pdf_text,

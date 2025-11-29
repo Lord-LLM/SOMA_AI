@@ -1,8 +1,8 @@
 import asyncio
 import os
-from dotenv import load_dotenv # Make sure you did 'pip install python-dotenv'
+from dotenv import load_dotenv 
 
-load_dotenv() # This reads the .env file
+load_dotenv() 
 
 from google.adk.runners import InMemoryRunner
 from content_summary_agent import content_summary_agent

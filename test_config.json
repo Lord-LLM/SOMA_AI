@@ -1,0 +1,153 @@
+{
+  "test_config.json": {
+    "criteria": {
+      "tool_trajectory_avg_score": 0.9,
+      "response_match_score": 0.75
+    }
+  },
+  
+  "integration.evalset.json": {
+    "eval_set_id": "study_companion_integration_tests",
+    "eval_cases": [
+      {
+        "eval_id": "test_roadmap_generation",
+        "conversation": [
+          {
+            "user_content": {
+              "parts": [
+                {"text": "Create a learning roadmap for Python programming. I have 30 days and can study 2 hours daily."}
+              ]
+            },
+            "final_response": {
+              "parts": [
+                {"text": "Here's your comprehensive 30-day Python learning roadmap with daily 2-hour study sessions"}
+              ]
+            },
+            "intermediate_data": {
+              "tool_uses": [
+                {
+                  "name": "RoadmapAgent",
+                  "args": {
+                    "topic": "Python programming",
+                    "days_available": 30,
+                    "hours_per_day": 2
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "eval_id": "test_content_summary",
+        "conversation": [
+          {
+            "user_content": {
+              "parts": [
+                {"text": "Summarize this article about machine learning: https://example.com/ml-article"}
+              ]
+            },
+            "final_response": {
+              "parts": [
+                {"text": "**Main Topics**: Machine learning fundamentals, algorithms, applications\n\n**Key Points**:"}
+              ]
+            },
+            "intermediate_data": {
+              "tool_uses": [
+                {
+                  "name": "ContentSummaryAgent",
+                  "args": {
+                    "url": "https://example.com/ml-article"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "eval_id": "test_teaching_with_examples",
+        "conversation": [
+          {
+            "user_content": {
+              "parts": [
+                {"text": "Teach me about for loops in Python with examples"}
+              ]
+            },
+            "final_response": {
+              "parts": [
+                {"text": "Let me explain for loops with clear examples"}
+              ]
+            },
+            "intermediate_data": {
+              "tool_uses": [
+                {
+                  "name": "TeacherAgent",
+                  "args": {
+                    "concept": "for loops in Python"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "eval_id": "test_quiz_generation",
+        "conversation": [
+          {
+            "user_content": {
+              "parts": [
+                {"text": "Create a 5-question quiz on Python basics"}
+              ]
+            },
+            "final_response": {
+              "parts": [
+                {"text": "Question 1: [Type: Multiple Choice | Difficulty: Easy]"}
+              ]
+            },
+            "intermediate_data": {
+              "tool_uses": [
+                {
+                  "name": "QuizGeneratorAgent",
+                  "args": {
+                    "topic": "Python basics",
+                    "num_questions": 5,
+                    "difficulty": "easy"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "eval_id": "test_progress_tracking",
+        "conversation": [
+          {
+            "user_content": {
+              "parts": [
+                {"text": "Show my progress on the Python roadmap"}
+              ]
+            },
+            "final_response": {
+              "parts": [
+                {"text": "✅ Completed: 3 milestones\n🔄 In Progress: 1 milestone"}
+              ]
+            },
+            "intermediate_data": {
+              "tool_uses": [
+                {
+                  "name": "ProgressTrackerAgent",
+                  "args": {
+                    "roadmap_id": "python_roadmap"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

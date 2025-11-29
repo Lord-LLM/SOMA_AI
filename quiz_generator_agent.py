@@ -93,7 +93,7 @@ def save_quiz_results(
     }
 
 
-# Create the Quiz Generator Agent
+# Quiz Generator Agent
 quiz_generator_agent = LlmAgent(
     name="QuizGeneratorAgent",
     model=Gemini(model="gemini-2.5-flash-lite", retry_options=retry_config),

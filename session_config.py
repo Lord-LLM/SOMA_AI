@@ -5,7 +5,7 @@ from google.adk.runners import Runner
 from agent import root_agent
 
 # Configure persistent session storage using SQLite
-# In production, use PostgreSQL or other enterprise database
+
 session_service = DatabaseSessionService(
     db_url="sqlite:///study_companion.db"
 )
