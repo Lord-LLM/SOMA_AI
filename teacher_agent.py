@@ -12,16 +12,6 @@ retry_config = types.HttpRetryOptions(
 )
 
 def generate_examples(concept: str, num_examples: int = 3) -> dict:
-    """
-    Structure for generating examples. The LLM will fill in actual examples.
-    
-    Args:
-        concept: The concept to generate examples for
-        num_examples: Number of examples to generate
-    
-    Returns:
-        Dictionary with example structure
-    """
     return {
         "status": "success",
         "concept": concept,
@@ -29,18 +19,7 @@ def generate_examples(concept: str, num_examples: int = 3) -> dict:
         "message": "Generate practical, real-world examples for this concept"
     }
 
-
 def create_analogy(concept: str, difficulty_level: str = "intermediate") -> dict:
-    """
-    Structure for creating analogies. The LLM will create the actual analogy.
-    
-    Args:
-        concept: The concept to create an analogy for
-        difficulty_level: Target audience level (beginner/intermediate/advanced)
-    
-    Returns:
-        Dictionary with analogy structure
-    """
     return {
         "status": "success",
         "concept": concept,
@@ -48,52 +27,86 @@ def create_analogy(concept: str, difficulty_level: str = "intermediate") -> dict
         "message": "Create a clear, relatable analogy for this concept"
     }
 
+# Strict output template
+OUTPUT_TEMPLATE = """
+# 📘 Concept Breakdown: {{concept}}
 
-# Create the Teacher Agent
+##  Key Points (5–7)
+- ...
+- ...
+- ...
+- ...
+- ...
+(Explain why each point matters)
+
+---
+
+## Detailed Explanation
+(Short, digestible explanations using simple language)
+
+---
+
+##  Real-World Examples
+(At least 3–4 examples from generate_examples tool)
+- Example 1: ...
+- Example 2: ...
+- Example 3: ...
+- Example 4 (optional): ...
+
+---
+
+##  Analogy  
+(Create a clear everyday analogy using create_analogy tool)
+
+---
+
+## Summary / Key Takeaways  
+- ...
+- ...
+- ...
+
+---
+
+##  Check-Your-Understanding Questions  
+(Always include this section even if the user does not ask)
+1. ...
+2. ...
+3. ...
+4. ...
+"""
+
+# Teacher agent
 teacher_agent = LlmAgent(
     name="TeacherAgent",
     model=Gemini(model="gemini-2.5-flash-lite", retry_options=retry_config),
-    instruction="""You are an expert educator who explains complex topics clearly and engagingly.
-    
-    Your teaching approach:
-    
-    1. **Key Points Extraction**:
-       - Identify the 5-7 most important concepts from the material
-       - Present each as a clear, concise bullet point
-       - Explain why each point matters
-    
-    2. **Concept Explanation**:
-       - Break down complex ideas into simple terms
-       - Use the Feynman Technique (explain like teaching a beginner)
-       - Define technical terms in plain language
-    
-    3. **Examples Generation**:
-       - Use generate_examples tool to structure examples
-       - Provide 3-4 real-world, practical examples for each key concept
-       - Make examples relatable and memorable
-       - Show how concepts apply in different contexts
-    
-    4. **Analogies & Metaphors**:
-       - Use create_analogy tool for complex topics
-       - Create vivid analogies that make abstract concepts concrete
-       - Compare to familiar situations or objects
-    
-    5. **Learning Reinforcement**:
-       - Summarize key takeaways at the end
-       - Highlight connections between concepts
-       - Suggest how to practice or apply the knowledge
-    
-    Teaching style:
-    - Be encouraging and supportive
-    - Use active voice and conversational tone
-    - Break information into digestible chunks
-    - Check understanding by building progressively
-    
-    Format your teaching with clear headers, bullet points, and examples.""",
+
+    instruction="""
+You are an expert educator who explains complex topics clearly and engagingly.
+
+Follow this teaching approach:
+
+1. Extract 5–7 key points and explain why they matter.
+2. Break concepts down simply using the Feynman Technique.
+3. Use the generate_examples tool to structure examples.
+4. Use create_analogy to make explanations concrete and relatable.
+5. Summarize with clear takeaways.
+6. ALWAYS include a 'Check-Your-Understanding Questions' section at the end.
+7. Follow the provided output template EXACTLY.
+
+Your tone:
+- Clear, friendly, encouraging
+- Structured and highly organized
+- Use headers, lists, spacing
+""",
+
     tools=[
         FunctionTool(generate_examples),
         FunctionTool(create_analogy),
         google_search
     ],
+
+    # Force the model to follow the complete structure
+    output_format=OUTPUT_TEMPLATE,
+
     output_key="teaching_content"
 )
